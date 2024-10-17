@@ -43,6 +43,10 @@
 
 \subsection*{L1 Loss (Lasso Regression)}
 - **Objective**: $\min_{\beta} \|X\beta - y\|_2^2 + \lambda \|\beta\|_1$
+- \[
+L(\beta) = \frac{1}{2n} \sum_{i=1}^{n} \left( y_i - \sum_{j=1}^{d} X_{ij} \beta_j \right)^2 + \lambda \sum_{j=1}^{d} |\beta_j|
+\]
+
 - **No closed-form solution**: Requires iterative optimization (e.g., coordinate descent).
 - **Benefits**: Performs feature selection by driving some coefficients to zero, improving interpretability.
 - **Tradeoff**: Excludes features that may still hold important information, may underperform if many features are relevant.
@@ -181,5 +185,91 @@
 - Guassian **PDF**: $p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$
 - Bernoulli **PMF**: $p(x) = \mu^x(1-\mu)^{1-x}$
 - Rayleigh **PDF**: $p(x) = \frac{x}{\sigma^2} \exp\left(-\frac{x^2}{2\sigma^2}\right)$
+
+
+
+
+\section*{1. Empirical Risk Minimization (ERM) and Population Risk}
+- **ERM**: Minimize loss over the training dataset. Objective: $\hat{L}(f) = \frac{1}{n} \sum_{i=1}^{n} \ell(f(x_i), y_i)$.
+- **Population Risk**: The expected loss over the entire distribution: $L(f) = \mathbb{E}_{x,y}[\ell(f(x), y)]$.
+- **Key Concept**: In practice, we minimize ERM as the true distribution is unknown.
+
+\section*{2. Logistic Regression - Gradient and Hessian}
+- **Objective**: Minimize cross-entropy loss. For binary classification:
+  \[
+  L(\beta) = - \sum_{i=1}^{n} \left( y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right)
+  \]
+- **Gradient**: 
+  \[
+  \nabla_{\beta} L(\beta) = \sum_{i=1}^{n} \left( \hat{y}_i - y_i \right) x_i
+  \]
+- **Hessian**: The second derivative (useful in Newton’s method for optimization).
+  \[
+  H = \sum_{i=1}^{n} \hat{y}_i (1 - \hat{y}_i) x_i x_i^T
+  \]
+- **Key Insight**: Logistic regression is best suited for linearly separable data.
+
+\section*{3. Bias-Variance Decomposition}
+- **Total Error**: Decomposed into bias, variance, and irreducible error.
+  \[
+  \text{Error} = \text{Bias}^2 + \text{Variance} + \text{Irreducible Error}
+  \]
+- **High Bias**: Underfitting, model too simple.
+- **High Variance**: Overfitting, model too complex.
+- **Tradeoff**: More complex models may have lower bias but higher variance.
+
+\section*{4. Polynomial Regression - Transforming Data}
+- **Objective**: Linear regression on transformed features (polynomial terms).
+- **Key Idea**: A linear model is applied to a polynomial transformation of the data:
+  \[
+  \hat{y} = \beta_0 + \beta_1 x + \beta_2 x^2 + \dots + \beta_d x^d
+  \]
+- **Use Case**: Fits data better when non-linear relationships are present.
+
+\section*{5. L1 vs L2 Regularization}
+- **L1 (Lasso)**:
+-- Performs feature selection by driving some coefficients to zero.
+-- Useful when some features are irrelevant.
+- **L2 (Ridge)**:
+-- Shrinks coefficients but retains all features.
+-- Better when most features contribute to the prediction.
+- **Elastic Net**: Combination of L1 and L2, useful when some features should be excluded, but correlation between features exists.
+
+\section*{6. One-vs-One vs One-vs-All for Multi-Class}**
+- **One-vs-All**: Train one classifier per class (class vs all others). Suited for imbalanced data.
+- **One-vs-One**: Train classifiers between each pair of classes. Scales better for many classes but computationally intensive.
+
+\section*{7. Learning Rate in Gradient Descent}**
+- **Low Learning Rate**: Convergence is slow but safe.
+- **High Learning Rate**: Faster convergence but risk of overshooting.
+- **Optimal Choice**: Adaptive methods like Adam adjust learning rates.
+
+\section*{8. 0-1 Loss - Computational Intractability}**
+- **Objective**: $\ell_{0-1} = \mathbb{1}(y_i \neq \hat{y}_i)$.
+- **Key Concept**: Minimizing 0-1 loss directly is NP-hard, which is why surrogates like hinge or logistic loss are used.
+
+\section*{9. Newton's Method for Logistic Regression}**
+- **Objective**: Update weights using second-order information.
+- **Update Rule**: 
+  \[
+  \beta_{t+1} = \beta_t - H^{-1} \nabla L(\beta)
+  \]
+- **Use Case**: Logistic regression, where the Hessian matrix speeds up convergence.
+
+\section*{10. k-Fold Cross Validation}**
+- **Key Concept**: The dataset is split into k subsets, with each subset used once as the validation set and k-1 subsets used for training.
+- **Use Case**: Ensures that each data point is used for both training and validation.
+- **Tradeoff**: Computationally expensive but gives better estimates of model performance.
+
+\section*{11. Gaussian Naive Bayes - Why Independence Assumption?}
+- **Key Assumption Features are conditionally independent given the class label.
+- **Benefit Allows efficient computation of probabilities in high-dimensional spaces.
+- **Tradeoff: The assumption is rarely true in practice, but works well for tasks like text classification (e.g., spam detection).
+
+\section*{12. ROC Curves in Binary Classification}
+- ** Recall = True Positive Rate (TPR): $\frac{\text{TP}}{\text{TP} + \text{FN}}$.
+- ** Precision = False Positive Rate (FPR): $\frac{\text{FP}}{\text{FP} + \text{TN}}$.
+- ** Area Under the Curve (AUC) **: Measures classifier performance; AUC close to 1 indicates a good classifier.
+
 \end{multicols}
 \end{document}
