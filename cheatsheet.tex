@@ -40,13 +40,26 @@
 \begin{multicols}{2}
 
 \section*{\textcolor{red}{Loss Functions}}
-\subsection*{L2 Loss (Ridge Regression)}
-$\min_{\beta} \|X\beta - y\|_2^2 + \lambda \|\beta\|_2^2$
-\textbf{Closed-form solution} $\beta^* = (X^TX + \lambda I)^{-1}X^Ty$
-- \textbf{Benefits} Shrinks coefficients, prevents overfitting, retains all features.
-- \textbf{Tradeoff} Does not perform feature selection, which reduces interpretability in high-dimensional spaces.
+\subsection*{Least Sum of Squares (L2 Loss)}
+$\min_{\beta} \|X\beta - y\|_2^2$
+\textbf{Derivation of closed form}
+
+$J(\beta) = \|y - X\beta\|_2^2$
+
+
+$J(\beta) = (y - X\beta)^T(y - X\beta)$
+
+$J(\beta^{*}) = \nabla J(\beta) = -2X^T(y - X\beta) = 0$
+
+$X^T X \beta = X^T y = 0$
+
+$\beta = {(X^T X)}^{-1} X^T y$
+
 \subsection*{L-Inf Loss}
-$\min_{\beta} \|X\beta - y\|_{\infty} + \lambda \|\beta\|_1$
+$L_{1,\infty}(\beta) = \max_{g} \sum_{i \in g} |y_i - X_i \beta|$
+\textbf{No closed form solution}
+
+outliers pull on this. Use if standard deviation is small.
 \subsection*{L1 Loss (Lasso Regression)}
 $\min_{\beta} \|X\beta - y\|_2^2 + \lambda \|\beta\|_1$
 
@@ -56,11 +69,36 @@ $L(\beta) = \frac{1}{2n} \sum_{i=1}^{n} \left( y_i - \sum_{j=1}^{d} X_{ij} \beta
 - \textbf{Benefits} Performs feature selection by driving some coefficients to zero, improving interpretability.
 - \textbf{Tradeoff} Excludes features that may still hold important information, may underperform if many features are relevant.
 
-\subsection*{Ridge Regularized Least Squares}
+\subsection*{Ridge Regularized L2 Loss}
 $\|X\beta - y\|_2^2 + \lambda\|\beta\|_2^2$
-\textbf{Closed-form solution} $\beta^* = (X^TX + \lambda I)^{-1}X^Ty$
-- \textbf{Benefits} Regularization avoids overfitting by shrinking coefficients.
-- \textbf{Tradeoff} Requires careful tuning of \(\lambda\) for the right balance between bias and variance.
+
+\textbf{Derivation of closed form}
+$
+J(\beta) = \|y - X\beta\|_2^2 + \lambda \|\beta\|_2^2
+$
+
+$
+J(\beta) = (y - X\beta)^T(y - X\beta) + \lambda \beta^T \beta
+$
+
+$
+\nabla_{\beta} J(\beta) = -2X^T(y - X\beta) + 2\lambda \beta = 0
+$
+
+$
+X^T X \beta + \lambda \beta = X^T y
+$
+
+$
+(X^T X + \lambda I) \beta = X^T y
+$
+
+$
+\beta = (X^T X + \lambda I)^{-1} X^T y
+$
+- \textbf{Benefits} Regularization avoids overfitting by shrinking coefficients.  Prevents overfitting, retains all features.
+- \textbf{Tradeoff} Requires careful tuning of \(\lambda\) for the right balance between bias and variance. Does not perform feature selection, which reduces interpretability in high-dimensional spaces.
+
 
 \subsection*{Mean Squared Error (MSE)}
 $\min_{\beta} \frac{1}{n} \sum_{i=1}^{n} (y_i - X_i\beta)^2$
@@ -321,5 +359,7 @@ $p(x|y) = \frac{p(y|x)p(x)}{p(y)}$
 $p(x,y) = p(x|y)p(y)$
 
 $P(x|y) < p(x,y)$
+\subsection*{More Stuff}
+$\nabla f(x) = e^{<a, x>} = a e^{<a, x>}$
 \end{multicols}
 \end{document}
