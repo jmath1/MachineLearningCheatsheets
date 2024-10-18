@@ -45,34 +45,63 @@ $\min_{\beta} \|X\beta - y\|_2^2 + \lambda \|\beta\|_2^2$
 \textbf{Closed-form solution} $\beta^* = (X^TX + \lambda I)^{-1}X^Ty$
 - \textbf{Benefits} Shrinks coefficients, prevents overfitting, retains all features.
 - \textbf{Tradeoff} Does not perform feature selection, which reduces interpretability in high-dimensional spaces.
-\subsection{L-Inf Loss}
+\subsection*{L-Inf Loss}
 - $\min_{\beta} \|X\beta - y\|_{\infty} + \lambda \|\beta\|_1$
 \subsection*{L1 Loss (Lasso Regression)}
 $\min_{\beta} \|X\beta - y\|_2^2 + \lambda \|\beta\|_1$
-- \[
-L(\beta) = \frac{1}{2n} \sum_{i=1}^{n} \left( y_i - \sum_{j=1}^{d} X_{ij} \beta_j \right)^2 + \lambda \sum_{j=1}^{d} |\beta_j|
-\]
+
+$L(\beta) = \frac{1}{2n} \sum_{i=1}^{n} \left( y_i - \sum_{j=1}^{d} X_{ij} \beta_j \right)^2 + \lambda \sum_{j=1}^{d} |\beta_j|$
 
 \textbf{No closed-form solution}: Requires iterative optimization (e.g., coordinate descent).
 - \textbf{Benefits} Performs feature selection by driving some coefficients to zero, improving interpretability.
 - \textbf{Tradeoff} Excludes features that may still hold important information, may underperform if many features are relevant.
 
-\section*{Ridge Regularized Least Squares}
+\subsection*{Ridge Regularized Least Squares}
 $\|X\beta - y\|_2^2 + \lambda\|\beta\|_2^2$
 \textbf{Closed-form solution} $\beta^* = (X^TX + \lambda I)^{-1}X^Ty$
 - \textbf{Benefits} Regularization avoids overfitting by shrinking coefficients.
 - \textbf{Tradeoff} Requires careful tuning of \(\lambda\) for the right balance between bias and variance.
 
-\section*{Loss Functions}
 \subsection*{Mean Squared Error (MSE)}
 $\min_{\beta} \frac{1}{n} \sum_{i=1}^{n} (y_i - X_i\beta)^2$
 - \textbf{Closed-form solution} $\beta^* = (X^TX)^{-1}X^Ty$
 - \textbf{Benefits} Simple and easy to compute. Works well with linear regression.
 - \textbf{Tradeoff} Sensitive to outliers, which can dominate the loss.
 
+
+
+\subsection*{Logarithmic Loss (LogLoss)}
+
+$L_{\text{logloss}} = -\frac{1}{n} \sum_{i=1}^{n} \left[ y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right]$
+\textbf{Explanation:} measures the performance of a classification model whose output is a probability value between 0 and 1. It penalizes predictions that are far from the true labels, with larger penalties for confident but incorrect predictions.
+
+\textbf{Benefits:}
+\begin{itemize}
+    \item Captures the uncertainty of predictions by considering probabilities.
+    \item Penalizes incorrect predictions more heavily the more confident they are.
+    \item Differentiable, making it suitable for gradient-based optimization.
+\end{itemize}
+
+\textbf{Tradeoffs:}
+\begin{itemize}
+    \item Sensitive to outliers, especially if the model is highly confident but wrong.
+    \item Requires well-calibrated probability outputs to be effective.
+    \item Can lead to high loss values if the model is overconfident with incorrect predictions.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
 \subsection*{Cross-Entropy Loss (Logistic Regression)}
 $L(\beta) = - \sum_{i=1}^{n} \left(y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i)\right)$
 \textbf{No closed-form solution} Solved iteratively via gradient descent.
+- \textbf{Explanation} Penalizes incorrect predictions based on the log likelihood of the true class. MLE for $\beta$ is $\text{argmax}_{\beta} P(y|\beta) = P(y_1|\beta) * P(y_2|\beta)\cdot P(y_n|beta) = log loss * cross entropy loss$.
 - \textbf{Benefits} Ideal for binary classification, models probabilities effectively.
 - \textbf{Tradeoff} More computationally expensive, requires careful parameter tuning.
 
@@ -112,18 +141,17 @@ $L = \sum_{i=1}^{n} \mathbb{1}(y_i \neq \hat{y}_i)$, where $\mathbb{1}$ is an in
 - \textbf{Equivalence} Multi-class cross-entropy simplifies to binary cross-entropy when the number of classes $C = 2$.
 - \textbf{Setup} For binary classification, we set $\beta^{(0)} = -\beta$ and $\beta^{(1)} = \beta$.
 - \textbf{Multi-Class Cross-Entropy** for two classes}:
-  \[
-  L = -\sum_{i=1}^{n} \sum_{c=0}^{1} y_{i,c} \log(\hat{y}_{i,c})
-  \]
+  
+  $L = -\sum_{i=1}^{n} \sum_{c=0}^{1} y_{i,c} \log(\hat{y}_{i,c})$
+  
   where $\hat{y}_{i,0} = \sigma(-\beta^T x_i)$ and $\hat{y}_{i,1} = \sigma(\beta^T x_i)$.
 - \textbf{Simplification} Plugging in the values of $\hat{y}_{i,0}$ and $\hat{y}_{i,1}$:
-  \[
-  L = -\sum_{i=1}^{n} \left( y_i \log(\sigma(\beta^T x_i)) + (1 - y_i) \log(1 - \sigma(\beta^T x_i)) \right)
-  \]
+  
+  $L = -\sum_{i=1}^{n} \left( y_i \log(\sigma(\beta^T x_i)) + (1 - y_i) \log(1 - \sigma(\beta^T x_i)) \right)$
+  
  This is the Binary Cross-Entropy Loss:
-  \[
-  L = -\frac{1}{n} \sum_{i=1}^{n} \left( y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right)
-  \]
+  
+  $L = -\frac{1}{n} \sum_{i=1}^{n} \left( y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right)$
 - \textbf{Conclusion} Multi-class cross-entropy for two classes reduces to binary cross-entropy when $\beta^{(0)} = -\beta$ and $\beta^{(1)} = \beta$.
 
 
@@ -162,7 +190,7 @@ $L = \sum_{i=1}^{n} \mathbb{1}(y_i \neq \hat{y}_i)$, where $\mathbb{1}$ is an in
 - \textbf{Benefits} Helps in understanding model complexity, assisting in selecting simpler models to reduce variance or more complex models to reduce bias.
 - \textbf{Tradeoff} High bias leads to underfitting (poor accuracy), high variance leads to overfitting (poor generalization).
 
-\section*{12. Regularization Techniques}
+\section*{Regularization Techniques}
 \subsection*{L2 Regularization (Ridge)}
 - \textbf{Objective} Adds $\lambda \|\beta\|_2^2$ to the loss function. As lambda grows
 - \textbf{Closed-form solution} $\beta^* = (X^TX + \lambda I)^{-1}X^Ty$
@@ -209,7 +237,18 @@ $L = \sum_{i=1}^{n} \mathbb{1}(y_i \neq \hat{y}_i)$, where $\mathbb{1}$ is an in
   \[
   H = \sum_{i=1}^{n} \hat{y}_i (1 - \hat{y}_i) x_i x_i^T
   \]
-- \textbf{Key Insight} Logistic regression is best suited for linearly separable data.
+  $H = X^T W X$, where $W$ is a diagonal matrix with elements $\hat{y}_i(1 - \hat{y}_i)$.
+- \textbf{Key Insight} Logistic regression is best suited for linearly separable data. The Hessian matrix \( H \) is used in second-order optimization, such as Newton’s method, to refine parameter estimates. It provides the second derivatives of the log-likelihood, helping adjust parameter updates based on the curvature of the loss function.
+
+In logistic regression, the Hessian is:
+
+
+
+where \( W \) is a diagonal matrix with elements \( \hat{y}_i(1 - \hat{y}_i) \). Newton's method uses the Hessian in the update rule:
+
+\[
+\beta_{t+1} = \beta_t - H^{-1} \nabla L(\beta)
+\]
 
 \section*{Bias-Variance Decomposition}
 - \textbf{Total Error} Decomposed into bias, variance, and irreducible error.
