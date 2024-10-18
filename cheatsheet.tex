@@ -76,26 +76,14 @@ $L_{\text{logloss}} = -\frac{1}{n} \sum_{i=1}^{n} \left[ y_i \log(\hat{y}_i) + (
 \textbf{Explanation:} measures the performance of a classification model whose output is a probability value between 0 and 1. It penalizes predictions that are far from the true labels, with larger penalties for confident but incorrect predictions.
 
 \textbf{Benefits:}
-\begin{itemize}
-    \item Captures the uncertainty of predictions by considering probabilities.
-    \item Penalizes incorrect predictions more heavily the more confident they are.
-    \item Differentiable, making it suitable for gradient-based optimization.
-\end{itemize}
+- Captures the uncertainty of predictions by considering probabilities.
+- Penalizes incorrect predictions more heavily the more confident they are.
+- Differentiable, making it suitable for gradient-based optimization.
 
 \textbf{Tradeoffs:}
-\begin{itemize}
-    \item Sensitive to outliers, especially if the model is highly confident but wrong.
-    \item Requires well-calibrated probability outputs to be effective.
-    \item Can lead to high loss values if the model is overconfident with incorrect predictions.
-\end{itemize}
-
-
-
-
-
-
-
-
+- Sensitive to outliers, especially if the model is highly confident but wrong.
+- Requires well-calibrated probability outputs to be effective.
+- Can lead to high loss values if the model is overconfident with incorrect predictions.
 
 
 \subsection*{Cross-Entropy Loss (Logistic Regression)}
@@ -226,35 +214,29 @@ $L = \sum_{i=1}^{n} \mathbb{1}(y_i \neq \hat{y}_i)$, where $\mathbb{1}$ is an in
 
 \section*{Logistic Regression - Gradient and Hessian}
 - \textbf{Objective} Minimize cross-entropy loss. For binary classification:
-  \[
-  L(\beta) = - \sum_{i=1}^{n} \left( y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right)
-  \]
+  
+  $L(\beta) = - \sum_{i=1}^{n} \left( y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right)$
+  
 - \textbf{Gradient} 
-  \[
-  \nabla_{\beta} L(\beta) = \sum_{i=1}^{n} \left( \hat{y}_i - y_i \right) x_i
-  \]
+  
+  $\nabla_{\beta} L(\beta) = \sum_{i=1}^{n} \left( \hat{y}_i - y_i \right) x_i$
+  
+  $\nabla_{\beta} L(\beta) = X^T (\hat{y} - y) = 0$
+
+  $h(z) = \frac{1}{1 + e^{-z}} = sigmoid$
 - \textbf{Hessian} The second derivative (useful in Newton’s method for optimization).
-  \[
-  H = \sum_{i=1}^{n} \hat{y}_i (1 - \hat{y}_i) x_i x_i^T
-  \]
+  $H = \sum_{i=1}^{n} \hat{y}_i (1 - \hat{y}_i) x_i x_i^T$
+  
   $H = X^T W X$, where $W$ is a diagonal matrix with elements $\hat{y}_i(1 - \hat{y}_i)$.
 - \textbf{Key Insight} Logistic regression is best suited for linearly separable data. The Hessian matrix \( H \) is used in second-order optimization, such as Newton’s method, to refine parameter estimates. It provides the second derivatives of the log-likelihood, helping adjust parameter updates based on the curvature of the loss function.
+Newton's method uses the Hessian in the update rule:
 
-In logistic regression, the Hessian is:
-
-
-
-where \( W \) is a diagonal matrix with elements \( \hat{y}_i(1 - \hat{y}_i) \). Newton's method uses the Hessian in the update rule:
-
-\[
-\beta_{t+1} = \beta_t - H^{-1} \nabla L(\beta)
-\]
+$\beta_{t+1} = \beta_t - H^{-1} \nabla L(\beta)$
 
 \section*{Bias-Variance Decomposition}
 - \textbf{Total Error} Decomposed into bias, variance, and irreducible error.
-  \[
-  \text{Error} = \text{Bias}^2 + \text{Variance} + \text{Irreducible Error}
-  \]
+  
+  $\text{Error} = \text{Bias}^2 + \text{Variance} + \text{Irreducible Error}$
 - \textbf{High Bias} Underfitting, model too simple.
 - \textbf{High Variance} Overfitting, model too complex.
 - \textbf{Tradeoff} More complex models may have lower bias but higher variance.
@@ -299,11 +281,8 @@ where \( W \) is a diagonal matrix with elements \( \hat{y}_i(1 - \hat{y}_i) \).
 
 
 \section*{Recall, Precision, AUC}
-- \textbf{Recall = True Positive Rate (TPR)}: $\frac{\text{TP}}{\text{TP} + \text{FN}}$.
-- \textbf{Precision = False Positive Rate (FPR)}: $\frac{\text{FP}}{\text{FP} + \text{TN}}$.
-- \textbf{Area Under the Curve (AUC)} Measures classifier performance; AUC close to 1 indicates a good classifier.
-
-
+- \textbf{Recall = True Positive Rate (TPR)}: $\frac{\text{TP}}{\text{TP} + \text{FN}}$. As $\lambda$ goes up, recall goes down.
+- \textbf{Precision = False Positive Rate (FPR)}: $\frac{\text{FP}}{\text{FP} + \text{TN}}$. As $\lambda$ goes up, precision goes up.
 
 \section*{\textcolor{red}{Other Concepts To Remember}}
 
@@ -335,6 +314,11 @@ Regularization can be justified from a Bayesian perspective, where it serves as 
 
 \subsection*{Naive Bayes Classifier and Binary Vectors}
 The Naive Bayes Classifier is justified by the Bernoulli probability model for binary vectors. The model's parameters are learned from the frequency of occurrences in the past data.
+\subsection*{Other Bayesian Concepts}
+$p(x|y) = \frac{p(y|x)p(x)}{p(y)}$
 
+$p(x,y) = p(x|y)p(y)$
+
+$P(x|y) < p(x,y)$
 \end{multicols}
 \end{document}
