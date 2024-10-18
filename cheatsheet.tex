@@ -42,7 +42,7 @@
 \section*{L1, L2, L-Inf Loss Functions with Benefits and Tradeoffs}
 \subsection*{L2 Loss (Ridge Regression)}
 $\min_{\beta} \|X\beta - y\|_2^2 + \lambda \|\beta\|_2^2$
-- \textbf{Closed-form solution} $\beta^* = (X^TX + \lambda I)^{-1}X^Ty$
+\textbf{Closed-form solution} $\beta^* = (X^TX + \lambda I)^{-1}X^Ty$
 - \textbf{Benefits} Shrinks coefficients, prevents overfitting, retains all features.
 - \textbf{Tradeoff} Does not perform feature selection, which reduces interpretability in high-dimensional spaces.
 \subsection{L-Inf Loss}
@@ -53,13 +53,13 @@ $\min_{\beta} \|X\beta - y\|_2^2 + \lambda \|\beta\|_1$
 L(\beta) = \frac{1}{2n} \sum_{i=1}^{n} \left( y_i - \sum_{j=1}^{d} X_{ij} \beta_j \right)^2 + \lambda \sum_{j=1}^{d} |\beta_j|
 \]
 
-- \textbf{No closed-form solution}: Requires iterative optimization (e.g., coordinate descent).
+\textbf{No closed-form solution}: Requires iterative optimization (e.g., coordinate descent).
 - \textbf{Benefits} Performs feature selection by driving some coefficients to zero, improving interpretability.
 - \textbf{Tradeoff} Excludes features that may still hold important information, may underperform if many features are relevant.
 
 \section*{Ridge Regularized Least Squares}
 $\|X\beta - y\|_2^2 + \lambda\|\beta\|_2^2$
-- \textbf{Closed-form solution} $\beta^* = (X^TX + \lambda I)^{-1}X^Ty$
+\textbf{Closed-form solution} $\beta^* = (X^TX + \lambda I)^{-1}X^Ty$
 - \textbf{Benefits} Regularization avoids overfitting by shrinking coefficients.
 - \textbf{Tradeoff} Requires careful tuning of \(\lambda\) for the right balance between bias and variance.
 
@@ -72,13 +72,13 @@ $\min_{\beta} \frac{1}{n} \sum_{i=1}^{n} (y_i - X_i\beta)^2$
 
 \subsection*{Cross-Entropy Loss (Logistic Regression)}
 $L(\beta) = - \sum_{i=1}^{n} \left(y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i)\right)$
-- \textbf{No closed-form solution} Solved iteratively via gradient descent.
+\textbf{No closed-form solution} Solved iteratively via gradient descent.
 - \textbf{Benefits} Ideal for binary classification, models probabilities effectively.
 - \textbf{Tradeoff} More computationally expensive, requires careful parameter tuning.
 
 \subsection*{Hinge Loss (Support Vector Machines)}
 $L = \max(0, 1 - y_i X_i \beta)$
-- \textbf{No closed-form solution} Solved via convex optimization methods
+\textbf{No closed-form solution} Solved via convex optimization methods
 - \textbf{Benefits} Useful in maximizing the margin between classes.
 - \textbf{Tradeoff} Computationally intensive for large datasets.
 
