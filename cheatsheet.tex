@@ -39,7 +39,7 @@
   
 \begin{multicols}{2}
 
-\section*{L1, L2, L-Inf Loss Functions with Benefits and Tradeoffs}
+\section*{\textcolor{red}{Loss Functions}}
 \subsection*{L2 Loss (Ridge Regression)}
 $\min_{\beta} \|X\beta - y\|_2^2 + \lambda \|\beta\|_2^2$
 \textbf{Closed-form solution} $\beta^* = (X^TX + \lambda I)^{-1}X^Ty$
@@ -141,6 +141,7 @@ $L = \sum_{i=1}^{n} \mathbb{1}(y_i \neq \hat{y}_i)$, where $\mathbb{1}$ is an in
   
   $L = -\frac{1}{n} \sum_{i=1}^{n} \left( y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right)$
 - \textbf{Conclusion} Multi-class cross-entropy for two classes reduces to binary cross-entropy when $\beta^{(0)} = -\beta$ and $\beta^{(1)} = \beta$.
+
 
 
 \section*{Gaussian Naive Bayes}
