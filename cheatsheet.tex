@@ -2,7 +2,7 @@
 \usepackage[margin=0.3in]{geometry}
 \usepackage{multicol}
 \usepackage{amsmath, amssymb}
-\usepackage{xcolor} % For colors
+\usepackage{xcolor}
 \setlength{\columnsep}{0.18in}
 \usepackage{titlesec}
 
@@ -32,244 +32,270 @@
 \begin{document}
 
 \footnotesize
+
+\begin{center}
+  github.com/jmath1/MachineLearningCheatsheets
+\end{center}
+  
 \begin{multicols}{2}
 
-\section*{1. L1 and L2 Loss Functions with Benefits and Tradeoffs}
+\section*{L1, L2, L-Inf Loss Functions with Benefits and Tradeoffs}
 \subsection*{L2 Loss (Ridge Regression)}
-- **Objective**: $\min_{\beta} \|X\beta - y\|_2^2 + \lambda \|\beta\|_2^2$
-- **Closed-form solution**: $\beta^* = (X^TX + \lambda I)^{-1}X^Ty$
-- **Benefits**: Shrinks coefficients, prevents overfitting, retains all features.
-- **Tradeoff**: Does not perform feature selection, which reduces interpretability in high-dimensional spaces.
-
+$\min_{\beta} \|X\beta - y\|_2^2 + \lambda \|\beta\|_2^2$
+- \textbf{Closed-form solution} $\beta^* = (X^TX + \lambda I)^{-1}X^Ty$
+- \textbf{Benefits} Shrinks coefficients, prevents overfitting, retains all features.
+- \textbf{Tradeoff} Does not perform feature selection, which reduces interpretability in high-dimensional spaces.
+\subsection{L-Inf Loss}
+- $\min_{\beta} \|X\beta - y\|_{\infty} + \lambda \|\beta\|_1$
 \subsection*{L1 Loss (Lasso Regression)}
-- **Objective**: $\min_{\beta} \|X\beta - y\|_2^2 + \lambda \|\beta\|_1$
+$\min_{\beta} \|X\beta - y\|_2^2 + \lambda \|\beta\|_1$
 - \[
 L(\beta) = \frac{1}{2n} \sum_{i=1}^{n} \left( y_i - \sum_{j=1}^{d} X_{ij} \beta_j \right)^2 + \lambda \sum_{j=1}^{d} |\beta_j|
 \]
 
-- **No closed-form solution**: Requires iterative optimization (e.g., coordinate descent).
-- **Benefits**: Performs feature selection by driving some coefficients to zero, improving interpretability.
-- **Tradeoff**: Excludes features that may still hold important information, may underperform if many features are relevant.
+- \textbf{No closed-form solution}: Requires iterative optimization (e.g., coordinate descent).
+- \textbf{Benefits} Performs feature selection by driving some coefficients to zero, improving interpretability.
+- \textbf{Tradeoff} Excludes features that may still hold important information, may underperform if many features are relevant.
 
-\section*{2. Ridge Regularized Least Squares}
-- **Objective**: $\|X\beta - y\|_2^2 + \lambda\|\beta\|_2^2$
-- **Closed-form solution**: $\beta^* = (X^TX + \lambda I)^{-1}X^Ty$
-- **Benefits**: Regularization avoids overfitting by shrinking coefficients.
-- **Tradeoff**: Requires careful tuning of \(\lambda\) for the right balance between bias and variance.
+\section*{Ridge Regularized Least Squares}
+$\|X\beta - y\|_2^2 + \lambda\|\beta\|_2^2$
+- \textbf{Closed-form solution} $\beta^* = (X^TX + \lambda I)^{-1}X^Ty$
+- \textbf{Benefits} Regularization avoids overfitting by shrinking coefficients.
+- \textbf{Tradeoff} Requires careful tuning of \(\lambda\) for the right balance between bias and variance.
 
-\section*{3. Loss Functions}
+\section*{Loss Functions}
 \subsection*{Mean Squared Error (MSE)}
-- **Objective**: $\min_{\beta} \frac{1}{n} \sum_{i=1}^{n} (y_i - X_i\beta)^2$
-- **Closed-form solution**: $\beta^* = (X^TX)^{-1}X^Ty$
-- **Benefits**: Simple and easy to compute. Works well with linear regression.
-- **Tradeoff**: Sensitive to outliers, which can dominate the loss.
+$\min_{\beta} \frac{1}{n} \sum_{i=1}^{n} (y_i - X_i\beta)^2$
+- \textbf{Closed-form solution} $\beta^* = (X^TX)^{-1}X^Ty$
+- \textbf{Benefits} Simple and easy to compute. Works well with linear regression.
+- \textbf{Tradeoff} Sensitive to outliers, which can dominate the loss.
 
 \subsection*{Cross-Entropy Loss (Logistic Regression)}
-- **Objective**: $L(\beta) = - \sum_{i=1}^{n} \left(y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i)\right)$
-- **No closed-form solution**: Solved iteratively via gradient descent.
-- **Benefits**: Ideal for binary classification, models probabilities effectively.
-- **Tradeoff**: More computationally expensive, requires careful parameter tuning.
+$L(\beta) = - \sum_{i=1}^{n} \left(y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i)\right)$
+- \textbf{No closed-form solution} Solved iteratively via gradient descent.
+- \textbf{Benefits} Ideal for binary classification, models probabilities effectively.
+- \textbf{Tradeoff} More computationally expensive, requires careful parameter tuning.
 
 \subsection*{Hinge Loss (Support Vector Machines)}
-- **Objective**: $L = \max(0, 1 - y_i X_i \beta)$
-- **No closed-form solution**: Solved via convex optimization methods (e.g., quadratic programming).
-- **Benefits**: Useful in maximizing the margin between classes.
-- **Tradeoff**: Computationally intensive for large datasets.
+$L = \max(0, 1 - y_i X_i \beta)$
+- \textbf{No closed-form solution} Solved via convex optimization methods
+- \textbf{Benefits} Useful in maximizing the margin between classes.
+- \textbf{Tradeoff} Computationally intensive for large datasets.
 
 \subsection*{0-1 Loss (Classification Problems)}
-- **Objective**: $L = \sum_{i=1}^{n} \mathbb{1}(y_i \neq \hat{y}_i)$, where $\mathbb{1}$ is an indicator function.
-- **Benefits**: Easy to understand and directly penalizes misclassification.
-- **Tradeoff**: Non-convex and discontinuous, so not suitable for gradient-based methods.
+$L = \sum_{i=1}^{n} \mathbb{1}(y_i \neq \hat{y}_i)$, where $\mathbb{1}$ is an indicator function.
+- \textbf{Benefits} Easy to understand and directly penalizes misclassification.
+- \textbf{Tradeoff} Non-convex and discontinuous, so not suitable for gradient-based methods.
 
 \subsection*{Multi-Class Cross-Entropy Loss}
-- **Objective**: Used for multi-class classification problems to measure the performance of a classification model whose output is a probability distribution across multiple classes.
-- **Formula**: $L = -\sum_{i=1}^{n} \sum_{c=1}^{C} y_{i,c} \log(\hat{y}_{i,c})$, where $C$ is the number of classes, $y_{i,c}$ is the true label (1 if class $c$ is correct, 0 otherwise), and $\hat{y}_{i,c}$ is the predicted probability for class $c$.
-- **Benefits**: 
+- \textbf{Objective} Used for multi-class classification problems to measure the performance of a classification model whose output is a probability distribution across multiple classes.
+- \textbf{Formula} $L = -\sum_{i=1}^{n} \sum_{c=1}^{C} y_{i,c} \log(\hat{y}_{i,c})$, where $C$ is the number of classes, $y_{i,c}$ is the true label (1 if class $c$ is correct, 0 otherwise), and $\hat{y}_{i,c}$ is the predicted probability for class $c$.
+- \textbf{Benefits} 
   - Ideal for problems where each instance can belong to one of several classes (e.g., image classification).
   - Models probabilistic outcomes effectively, providing confidence scores.
-- **Tradeoffs**: 
+- \textbf{Tradeoffs} 
   - More computationally intensive compared to binary cross-entropy due to multiple classes.
   - Sensitive to class imbalance, which may lead to biased predictions if one class dominates.
-- **Key Concepts**: This loss encourages models to output probabilities that are as close as possible to the true one-hot encoded labels.
+- \textbf{Key Concepts} This loss encourages models to output probabilities that are as close as possible to the true one-hot encoded labels.
 
 \subsection*{Binary Cross-Entropy Loss}
-- **Objective**: Used for binary classification problems, measuring the performance of a classification model whose output is a probability value between 0 and 1.
-- **Formula**: $L = -\frac{1}{n} \sum_{i=1}^{n} \left( y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right)$, where $y_i$ is the true binary label (1 or 0), and $\hat{y}_i$ is the predicted probability for label 1.
-- **Benefits**:
+- \textbf{Objective} Used for binary classification problems, measuring the performance of a classification model whose output is a probability value between 0 and 1.
+- \textbf{Formula} $L = -\frac{1}{n} \sum_{i=1}^{n} \left( y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right)$, where $y_i$ is the true binary label (1 or 0), and $\hat{y}_i$ is the predicted probability for label 1.
+- \textbf{Benefits}
   - Ideal for binary classification tasks like spam detection or medical diagnosis.
-- **Tradeoffs**:
+- \textbf{Tradeoffs}
   - Can struggle with class imbalance
   - Sensitive to extreme predictions (very close to 0 or 1) that may cause large gradients, impacting training stability.
-- **Key Concepts**: This loss penalizes incorrect predictions and emphasizes confidence, making it widely used in classification problems involving two outcomes.
+- \textbf{Key Concepts} This loss penalizes incorrect predictions and emphasizes confidence, making it widely used in classification problems involving two outcomes.
 
 \subsection*{Equivalence of Multi-Class and Binary Cross-Entropy Loss}
-- **Equivalence**: Multi-class cross-entropy simplifies to binary cross-entropy when the number of classes $C = 2$.
-- **Setup**: For binary classification, we set $\beta^{(0)} = -\beta$ and $\beta^{(1)} = \beta$.
-- **Multi-Class Cross-Entropy** for two classes:
+- \textbf{Equivalence} Multi-class cross-entropy simplifies to binary cross-entropy when the number of classes $C = 2$.
+- \textbf{Setup} For binary classification, we set $\beta^{(0)} = -\beta$ and $\beta^{(1)} = \beta$.
+- \textbf{Multi-Class Cross-Entropy** for two classes}:
   \[
   L = -\sum_{i=1}^{n} \sum_{c=0}^{1} y_{i,c} \log(\hat{y}_{i,c})
   \]
   where $\hat{y}_{i,0} = \sigma(-\beta^T x_i)$ and $\hat{y}_{i,1} = \sigma(\beta^T x_i)$.
-- **Simplification**: Plugging in the values of $\hat{y}_{i,0}$ and $\hat{y}_{i,1}$:
+- \textbf{Simplification} Plugging in the values of $\hat{y}_{i,0}$ and $\hat{y}_{i,1}$:
   \[
   L = -\sum_{i=1}^{n} \left( y_i \log(\sigma(\beta^T x_i)) + (1 - y_i) \log(1 - \sigma(\beta^T x_i)) \right)
   \]
-  This is the **Binary Cross-Entropy Loss**:
+ This is the Binary Cross-Entropy Loss:
   \[
   L = -\frac{1}{n} \sum_{i=1}^{n} \left( y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right)
   \]
-- **Conclusion**: Multi-class cross-entropy for two classes reduces to binary cross-entropy when $\beta^{(0)} = -\beta$ and $\beta^{(1)} = \beta$.
+- \textbf{Conclusion} Multi-class cross-entropy for two classes reduces to binary cross-entropy when $\beta^{(0)} = -\beta$ and $\beta^{(1)} = \beta$.
 
 
-\section*{4. Gaussian Naive Bayes}
-- **MAP**: $\text{argmax}_y \left( p(y|x) = \frac{p(x|y)p(y)}{p(x)} \right)$
-- **Likelihood**: $p(x|y) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)$
-- **Benefits**: Fast to compute, assumes independence between features.
-- **Tradeoff**: Assumption of independence is often unrealistic, which can lead to inaccuracies.
+\section*{Gaussian Naive Bayes}
+- \textbf{MAP} $\text{argmax}_y \left( p(y|x) = \frac{p(x|y)p(y)}{p(x)} \right)$
+- \textbf{Likelihood} $p(x|y) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)$
+- \textbf{Benefits} Fast to compute, assumes independence between features.
+- \textbf{Tradeoff} Assumption of independence is often unrealistic, which can lead to inaccuracies.
 
-\section*{5. K-Fold Cross Validation}
-- **Benefits**: Provides better estimates of model performance by using every data point for both training and validation.
-- **Tradeoff**: Computationally expensive, especially for large datasets or complex models.
+\section*{Derivatives for Optimization}
+- \textbf{Gradient} $\nabla f(x) = \left[\frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \dots, \frac{\partial f}{\partial x_n}\right]$
+- \textbf{Chain Rule} $\frac{\partial f}{\partial x} = \frac{\partial f}{\partial u} \cdot \frac{\partial u}{\partial x}$
 
-\section*{6. Derivatives for Optimization}
-- **Gradient**: $\nabla f(x) = \left[\frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \dots, \frac{\partial f}{\partial x_n}\right]$
-- **Chain Rule**: $\frac{\partial f}{\partial x} = \frac{\partial f}{\partial u} \cdot \frac{\partial u}{\partial x}$
+\section*{Maximum Likelihood Estimation (MLE)}
+- \textbf{Gaussian MLE} $\mu_{MLE} = \frac{1}{n} \sum x_i$, \quad $\sigma_{MLE}^2 = \frac{1}{n} \sum (x_i - \mu)^2$
+- \textbf{Bernoulli MLE} $\mu_{MLE} = \frac{1}{n} \sum x_i$
+- \textbf{Benefits} Provides efficient estimators if the assumptions about data distribution are correct.
+- \textbf{Tradeoff} Assumptions about data distribution can lead to poor results if incorrect.
 
-\section*{7. Maximum Likelihood Estimation (MLE)}
-- **Gaussian MLE**: $\mu_{MLE} = \frac{1}{n} \sum x_i$, \quad $\sigma_{MLE}^2 = \frac{1}{n} \sum (x_i - \mu)^2$
-- **Bernoulli MLE**: $\mu_{MLE} = \frac{1}{n} \sum x_i$
-- **Benefits**: Provides efficient estimators if the assumptions about data distribution are correct.
-- **Tradeoff**: Assumptions about data distribution can lead to poor results if incorrect.
+\section*{Gradient Descent}
+- \textbf{Update Rule} $\beta \leftarrow \beta - \alpha\nabla L(\beta)$, where $\alpha$ is the learning rate.
+- \textbf{Benefits} Works for large models without closed-form solutions (e.g., neural networks, logistic regression).
+- \textbf{Tradeoff} Sensitive to choice of learning rate, can converge slowly or diverge.
 
-\section*{8. Gradient Descent}
-- **Update Rule**: $\beta \leftarrow \beta - \alpha\nabla L(\beta)$, where $\alpha$ is the learning rate.
-- **Benefits**: Works for large models without closed-form solutions (e.g., neural networks, logistic regression).
-- **Tradeoff**: Sensitive to choice of learning rate, can converge slowly or diverge.
+\section*{Rayleigh Distribution MLE}
+- \textbf{PDF} $p(x) = \frac{x}{\sigma^2} \exp\left( \frac{-x^2}{2\sigma^2} \right)$
+- \textbf{MLE for $\sigma$} $\sigma_{MLE} = \sqrt{\frac{1}{2n} \sum x_i^2}$
+- \textbf{Benefits} Provides a simple estimation method for certain non-negative data.
+- \textbf{Tradeoff} Assumes a specific distribution, may not generalize well to other data.
 
-\section*{9. Rayleigh Distribution MLE}
-- **PDF**: $p(x) = \frac{x}{\sigma^2} \exp\left( \frac{-x^2}{2\sigma^2} \right)$
-- **MLE for $\sigma$**: $\sigma_{MLE} = \sqrt{\frac{1}{2n} \sum x_i^2}$
-- **Benefits**: Provides a simple estimation method for certain non-negative data.
-- **Tradeoff**: Assumes a specific distribution, may not generalize well to other data.
+\section*{Matrix Calculus Rules}
+- \textbf{Quadratic Form Derivative} $\frac{d}{d\beta} \left( \beta^T X \beta \right) = 2X\beta$
+- \textbf{Logarithmic Derivative} $\frac{d}{d\beta} \log f(\beta) = \frac{1}{f(\beta)} \cdot f'(\beta)$
 
-\section*{10. Matrix Calculus Rules}
-- **Quadratic Form Derivative**: $\frac{d}{d\beta} \left( \beta^T X \beta \right) = 2X\beta$
-- **Logarithmic Derivative**: $\frac{d}{d\beta} \log f(\beta) = \frac{1}{f(\beta)} \cdot f'(\beta)$
-
-\section*{11. Bias-Variance Tradeoff}
-- **Benefits**: Helps in understanding model complexity, assisting in selecting simpler models to reduce variance or more complex models to reduce bias.
-- **Tradeoff**: High bias leads to underfitting (poor accuracy), high variance leads to overfitting (poor generalization).
+\section*{Bias-Variance Tradeoff}
+- \textbf{Benefits} Helps in understanding model complexity, assisting in selecting simpler models to reduce variance or more complex models to reduce bias.
+- \textbf{Tradeoff} High bias leads to underfitting (poor accuracy), high variance leads to overfitting (poor generalization).
 
 \section*{12. Regularization Techniques}
 \subsection*{L2 Regularization (Ridge)}
-- **Objective**: Adds $\lambda \|\beta\|_2^2$ to the loss function.
-- **Closed-form solution**: $\beta^* = (X^TX + \lambda I)^{-1}X^Ty$
-- **Benefits**: Prevents overfitting, improves generalizability.
-- **Tradeoff**: Does not eliminate features, making models harder to interpret in high dimensions.
+- \textbf{Objective} Adds $\lambda \|\beta\|_2^2$ to the loss function. As lambda grows
+- \textbf{Closed-form solution} $\beta^* = (X^TX + \lambda I)^{-1}X^Ty$
+- \textbf{Benefits} Prevents overfitting, improves generalizability.
+- \textbf{Tradeoff} Does not eliminate features, making models harder to interpret in high dimensions.
 
 \subsection*{L1 Regularization (Lasso)}
-- **Objective**: Adds $\lambda \|\beta\|_1$ to the loss function.
-- **No closed-form solution**: Solved via optimization (e.g., coordinate descent).
-- **Benefits**: Encourages sparsity, making the model more interpretable.
-- **Tradeoff**: Can exclude relevant features if not tuned carefully.
+- \textbf{Objective} Adds $\lambda \|\beta\|_1$ to the loss function.
+- \textbf{No closed-form solution} Solved via optimization (e.g., coordinate descent).
+- \textbf{Benefits} Encourages sparsity, making the model more interpretable.
+- \textbf{Tradeoff} Can exclude relevant features if not tuned carefully.
 
-\section*{13. One-Hot Encoding}
-- **Definition**: One-hot encoding is a process used to convert categorical data into a binary vector for each category.
-- **Process**: Each category in the dataset is transformed into a vector where only one element is 1, and the rest are 0s.
-- **Benefits**: Allows categorical data to be used in machine learning algorithms that require numerical input.
-- **Tradeoff**: Can lead to high-dimensional datasets when the number of categories is large, which may increase computational costs and memory usage.
+\section*{One-Hot Encoding}
+- \textbf{Definition} One-hot encoding is a process used to convert categorical data into a binary vector for each category.
+- \textbf{Process} Each category in the dataset is transformed into a vector where only one element is 1, and the rest are 0s.
+- \textbf{Benefits} Allows categorical data to be used in machine learning algorithms that require numerical input.
+- \textbf{Tradeoff} Can lead to high-dimensional datasets when the number of categories is large, which may increase computational costs and memory usage.
 
-\section*{14. Distributions}
+\section*{Distributions}
 
-- Laplace **PDF**: $p(x) = \frac{1}{2b} \exp\left(-\frac{|x-\mu|}{b}\right)$
-- Guassian **PDF**: $p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$
-- Bernoulli **PMF**: $p(x) = \mu^x(1-\mu)^{1-x}$
-- Rayleigh **PDF**: $p(x) = \frac{x}{\sigma^2} \exp\left(-\frac{x^2}{2\sigma^2}\right)$
-
-
+- Laplace **PDF** $p(x) = \frac{1}{2b} \exp\left(-\frac{|x-\mu|}{b}\right)$
+- Guassian **PDF** $p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$
+- Bernoulli **PMF** $p(x) = \mu^x(1-\mu)^{1-x}$
+- Rayleigh **PDF** $p(x) = \frac{x}{\sigma^2} \exp\left(-\frac{x^2}{2\sigma^2}\right)$
 
 
-\section*{1. Empirical Risk Minimization (ERM) and Population Risk}
-- **ERM**: Minimize loss over the training dataset. Objective: $\hat{L}(f) = \frac{1}{n} \sum_{i=1}^{n} \ell(f(x_i), y_i)$.
-- **Population Risk**: The expected loss over the entire distribution: $L(f) = \mathbb{E}_{x,y}[\ell(f(x), y)]$.
-- **Key Concept**: In practice, we minimize ERM as the true distribution is unknown.
 
-\section*{2. Logistic Regression - Gradient and Hessian}
-- **Objective**: Minimize cross-entropy loss. For binary classification:
+
+\section*{Empirical Risk Minimization (ERM) and Population Risk}
+- \textbf{ERM} Minimize loss over the training dataset. Objective: $\hat{L}(f) = \frac{1}{n} \sum_{i=1}^{n} \ell(f(x_i), y_i)$.
+- \textbf{Population Risk} The expected loss over the entire distribution: $L(f) = \mathbb{E}_{x,y}[\ell(f(x), y)]$.
+- \textbf{Key Concept} In practice, we minimize ERM as the true distribution is unknown.
+
+\section*{Logistic Regression - Gradient and Hessian}
+- \textbf{Objective} Minimize cross-entropy loss. For binary classification:
   \[
   L(\beta) = - \sum_{i=1}^{n} \left( y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right)
   \]
-- **Gradient**: 
+- \textbf{Gradient} 
   \[
   \nabla_{\beta} L(\beta) = \sum_{i=1}^{n} \left( \hat{y}_i - y_i \right) x_i
   \]
-- **Hessian**: The second derivative (useful in Newton’s method for optimization).
+- \textbf{Hessian} The second derivative (useful in Newton’s method for optimization).
   \[
   H = \sum_{i=1}^{n} \hat{y}_i (1 - \hat{y}_i) x_i x_i^T
   \]
-- **Key Insight**: Logistic regression is best suited for linearly separable data.
+- \textbf{Key Insight} Logistic regression is best suited for linearly separable data.
 
-\section*{3. Bias-Variance Decomposition}
-- **Total Error**: Decomposed into bias, variance, and irreducible error.
+\section*{Bias-Variance Decomposition}
+- \textbf{Total Error} Decomposed into bias, variance, and irreducible error.
   \[
   \text{Error} = \text{Bias}^2 + \text{Variance} + \text{Irreducible Error}
   \]
-- **High Bias**: Underfitting, model too simple.
-- **High Variance**: Overfitting, model too complex.
-- **Tradeoff**: More complex models may have lower bias but higher variance.
+- \textbf{High Bias} Underfitting, model too simple.
+- \textbf{High Variance} Overfitting, model too complex.
+- \textbf{Tradeoff} More complex models may have lower bias but higher variance.
 
-\section*{4. Polynomial Regression - Transforming Data}
-- **Objective**: Linear regression on transformed features (polynomial terms).
-- **Key Idea**: A linear model is applied to a polynomial transformation of the data:
+\section*{Polynomial Regression - Transforming Data}
+- \textbf{Objective} Linear regression on transformed features (polynomial terms).
+- \textbf{Key Idea} A linear model is applied to a polynomial transformation of the data:
   \[
   \hat{y} = \beta_0 + \beta_1 x + \beta_2 x^2 + \dots + \beta_d x^d
   \]
-- **Use Case**: Fits data better when non-linear relationships are present.
+- \textbf{Use Case} Fits data better when non-linear relationships are present.
 
-\section*{5. L1 vs L2 Regularization}
-- **L1 (Lasso)**:
+\section*{L1 vs L2 Regularization}
+- \textbf{L1 (Lasso)}
 -- Performs feature selection by driving some coefficients to zero.
 -- Useful when some features are irrelevant.
-- **L2 (Ridge)**:
+- \textbf{L2 (Ridge)}
 -- Shrinks coefficients but retains all features.
 -- Better when most features contribute to the prediction.
-- **Elastic Net**: Combination of L1 and L2, useful when some features should be excluded, but correlation between features exists.
+- \textbf{Elastic Net} Combination of L1 and L2, useful when some features should be excluded, but correlation between features exists.
 
-\section*{6. One-vs-One vs One-vs-All for Multi-Class}**
-- **One-vs-All**: Train one classifier per class (class vs all others). Suited for imbalanced data.
-- **One-vs-One**: Train classifiers between each pair of classes. Scales better for many classes but computationally intensive.
+\section*{One-vs-One vs One-vs-All for Multi-Class}**
+- \textbf{One-vs-All} Train one classifier per class (class vs all others). Suited for imbalanced data.
+- \textbf{One-vs-One} Train classifiers between each pair of classes. Scales better for many classes but computationally intensive.
 
-\section*{7. Learning Rate in Gradient Descent}**
-- **Low Learning Rate**: Convergence is slow but safe.
-- **High Learning Rate**: Faster convergence but risk of overshooting.
-- **Optimal Choice**: Adaptive methods like Adam adjust learning rates.
+\section*{0-1 Loss - Computational Intractability}**
+- \textbf{Objective} $\ell_{0-1} = \mathbb{1}(y_i \neq \hat{y}_i)$.
+- \textbf{Key Concept} Minimizing 0-1 loss directly is NP-hard, which is why surrogates like hinge or logistic loss are used.
 
-\section*{8. 0-1 Loss - Computational Intractability}**
-- **Objective**: $\ell_{0-1} = \mathbb{1}(y_i \neq \hat{y}_i)$.
-- **Key Concept**: Minimizing 0-1 loss directly is NP-hard, which is why surrogates like hinge or logistic loss are used.
-
-\section*{9. Newton's Method for Logistic Regression}**
-- **Objective**: Update weights using second-order information.
-- **Update Rule**: 
+\section*{Newton's Method for Logistic Regression}**
+- \textbf{Objective} Update weights using second-order information.
+- \textbf{Update Rule} 
   \[
   \beta_{t+1} = \beta_t - H^{-1} \nabla L(\beta)
   \]
-- **Use Case**: Logistic regression, where the Hessian matrix speeds up convergence.
+- \textbf{Use Case} Logistic regression, where the Hessian matrix speeds up convergence.
 
-\section*{10. k-Fold Cross Validation}**
-- **Key Concept**: The dataset is split into k subsets, with each subset used once as the validation set and k-1 subsets used for training.
-- **Use Case**: Ensures that each data point is used for both training and validation.
-- **Tradeoff**: Computationally expensive but gives better estimates of model performance.
+\section*{k-Fold Cross Validation}**
+- \textbf{Key Concept} Split data into k subsets. Train on k-1, test on 1. Repeat k times, each subset as test. Average results for final performance estimate.
+- \textbf{Use Case} Ensures that each data point is used for both training and validation.
+- \textbf{Tradeoff} Computationally expensive but gives better estimates of model performance.
 
-\section*{11. Gaussian Naive Bayes - Why Independence Assumption?}
-- **Key Assumption Features are conditionally independent given the class label.
-- **Benefit Allows efficient computation of probabilities in high-dimensional spaces.
-- **Tradeoff: The assumption is rarely true in practice, but works well for tasks like text classification (e.g., spam detection).
 
-\section*{12. ROC Curves in Binary Classification}
-- ** Recall = True Positive Rate (TPR): $\frac{\text{TP}}{\text{TP} + \text{FN}}$.
-- ** Precision = False Positive Rate (FPR): $\frac{\text{FP}}{\text{FP} + \text{TN}}$.
-- ** Area Under the Curve (AUC) **: Measures classifier performance; AUC close to 1 indicates a good classifier.
+\section*{Recall, Precision, AUC}
+- \textbf{Recall = True Positive Rate (TPR)}: $\frac{\text{TP}}{\text{TP} + \text{FN}}$.
+- \textbf{Precision = False Positive Rate (FPR)}: $\frac{\text{FP}}{\text{FP} + \text{TN}}$.
+- \textbf{Area Under the Curve (AUC)} Measures classifier performance; AUC close to 1 indicates a good classifier.
+
+
+
+\section*{\textcolor{red}{Other Concepts To Remember}}
+
+\subsection*{Poor Fit in Linear Regression}
+Poor fitting in linear regression can occur when the wrong model is chosen. For example, non-linear data can be handled by transforming the target variable \( y \), such as solving for \( \beta \) with respect to \( 1/y \). This transformation allows for better fitting of non-linear relationships.
+
+\subsection*{Multiple Linear Regression and Data Transformations}
+Multiple linear regression can be adapted to fit more complex models, such as \( q \)-degree polynomials or sinusoidal curves, by transforming the input features. For example, creating a transformation vector with polynomial or sinusoidal features allows the use of techniques like LASSO to select the most relevant features. Sinusoidal transformations are particularly useful for periodic data.
+
+\subsection*{Overfitting and Generalization}
+Overfitting occurs when the model performs well on training data but poorly on test data, indicating poor generalization. Generalization refers to the model's ability to predict accurately on unseen data. A proper split of the dataset, where the training set is significantly larger than the test set, can help assess generalization.
+
+\subsection*{Model Selection}
+Model selection involves choosing the appropriate model to represent the data. The right model helps balance the fit on training data and test data to avoid overfitting or underfitting.
+
+\subsection*{Risk Definitions}
+- \textbf{Population Risk}: The average loss over the entire dataset.
+- \textbf{Empirical Risk}: The average loss over the training data. Since the expectations of the population and empirical risks are the same, empirical risk serves as a good estimate of generalization performance.
+
+\subsection*{Regularization}
+Regularization adds a penalty to the loss function to prevent overfitting, especially when there are more features than data points, which can lead to a model that fits the training data too closely. Regularization reduces the values of \( \beta_* \), thereby controlling the model's complexity.
+
+\subsection*{Bayesian Perspective of Regularization}
+Regularization can be justified from a Bayesian perspective, where it serves as a prior belief about the parameters. By incorporating a prior, we reduce overfitting by shrinking the parameter estimates toward more likely values.
+
+\subsection*{MAP vs. MLE}
+- \textbf{Maximum A Posteriori (MAP)}: Estimates the parameters by maximizing the posterior distribution, considering both prior knowledge and the likelihood of the data.
+- \textbf{Maximum Likelihood Estimation (MLE)}: Estimates the parameters by maximizing the likelihood function without considering prior information.
+
+\subsection*{Naive Bayes Classifier and Binary Vectors}
+The Naive Bayes Classifier is justified by the Bernoulli probability model for binary vectors. The model's parameters are learned from the frequency of occurrences in the past data.
 
 \end{multicols}
 \end{document}
